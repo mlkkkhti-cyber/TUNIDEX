@@ -1,0 +1,6 @@
+{
+  "name": "Tunidex",
+  "description": "The ultimate car spotting game and enthusiast dex. Spot supercars, hypercars and tuners, log your spots, test your rev dyno, and complete daily quests.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

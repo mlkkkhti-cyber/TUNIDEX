@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Tunidex</string>
+    <string name="nav_tunidex">Tunidex</string>
+    <string name="nav_spot">Spot Cam</string>
+    <string name="nav_garage">Garage</string>
+    <string name="nav_dyno">Rev Dyno</string>
+    <string name="nav_quests">Quests</string>
+</resources>
