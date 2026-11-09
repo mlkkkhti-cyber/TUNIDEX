@@ -5,6 +5,6 @@
 
   <p>Car Spotting Game </p>
 
-  <a href="404.com">Visit Web Site.</a>
+  <a href="404.com">Visit Web Site</a>
 
 </div>
