@@ -102,6 +102,7 @@ fun SpotCamScreen(
     var spotterNotes by remember { mutableStateOf("Spotted rolling in with incredible exhaust note!") }
     var zoomLevel by remember { mutableStateOf("1x") }
     var carDropdownExpanded by remember { mutableStateOf(false) }
+    var showCameraScreen by remember { mutableStateOf(false) }
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
@@ -228,28 +229,60 @@ fun SpotCamScreen(
                 drawLine(reticleColor.copy(alpha = 0.4f), Offset(w / 2f, h / 2f - 14f), Offset(w / 2f, h / 2f + 14f), 1.5f)
             }
 
-            // Floating Photo Action Button
-            Button(
-                onClick = {
-                    photoPickerLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                },
+            // Floating Action Buttons (Live Camera + Gallery)
+            Row(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(12.dp)
-                    .testTag("attach_photo_button"),
-                colors = ButtonDefaults.buttonColors(containerColor = CarbonCard.copy(alpha = 0.9f)),
-                shape = RoundedCornerShape(10.dp)
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                Icon(imageVector = Icons.Default.AddPhotoAlternate, contentDescription = null, tint = TurboCyan, modifier = Modifier.size(18.dp))
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = if (photoUri != null) "Change Photo" else "Snap / Gallery",
-                    color = TextPrimary,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                // Live Camera Button
+                Button(
+                    onClick = { showCameraScreen = true },
+                    modifier = Modifier.testTag("open_live_camera_button"),
+                    colors = ButtonDefaults.buttonColors(containerColor = TurboCyan),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FlashOn,
+                        contentDescription = "Live Cam",
+                        tint = Color.Black,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "LIVE CAM",
+                        color = Color.Black,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                }
+
+                // Gallery Picker Button
+                Button(
+                    onClick = {
+                        photoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                    modifier = Modifier.testTag("attach_photo_button"),
+                    colors = ButtonDefaults.buttonColors(containerColor = CarbonCard.copy(alpha = 0.95f)),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AddPhotoAlternate,
+                        contentDescription = "Gallery",
+                        tint = TextPrimary,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = if (photoUri != null) "Change" else "Gallery",
+                        color = TextPrimary,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
 
@@ -546,5 +579,18 @@ fun SpotCamScreen(
         }
 
         Spacer(modifier = Modifier.height(40.dp))
+    }
+
+    if (showCameraScreen) {
+        CameraScreen(
+            targetCar = selectedCar,
+            onPhotoCaptured = { uri ->
+                photoUri = uri
+                showCameraScreen = false
+            },
+            onClose = {
+                showCameraScreen = false
+            }
+        )
     }
 }

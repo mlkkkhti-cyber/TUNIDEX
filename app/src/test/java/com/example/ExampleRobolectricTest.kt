@@ -41,4 +41,17 @@ class ExampleRobolectricTest {
     assertNotNull(gt3rs)
     assertEquals(9000, gt3rs?.redlineRpm)
   }
+
+  @Test
+  fun `verify spot entity creation with camera photo uri`() {
+    val spot = com.example.data.db.SpotEntity(
+      carId = "porsche_911_gt3_rs_992",
+      locationName = "Monaco Casino Square",
+      photoUri = "file:///tmp/car_spot_test.jpg",
+      pointsEarned = 700
+    )
+    assertEquals("porsche_911_gt3_rs_992", spot.carId)
+    assertEquals("file:///tmp/car_spot_test.jpg", spot.photoUri)
+    assertEquals(700, spot.pointsEarned)
+  }
 }
